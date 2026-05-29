@@ -986,7 +986,7 @@
           </a>
         </div>
       </div>
-      <form class="reveal" id="contactForm">
+      <form class="reveal" id="contactForm" action="https://formspree.io/f/mzdwoorj" method="POST">
         <div class="field">
           <label for="name">Nombre</label>
           <input id="name" type="text" placeholder="Cómo te llamás" required />
@@ -1284,14 +1284,22 @@
 (function(){
   const f = document.getElementById('contactForm');
   if(!f) return;
-  f.addEventListener('submit', (e) => {
+  f.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const msg = document.getElementById('msg').value.trim();
-    const subject = encodeURIComponent(`Contacto desde portfolio — ${name}`);
-    const body = encodeURIComponent(`${msg}\n\n— ${name} (${email})`);
-    window.location.href = `mailto:marcomedinacastro2003@gmail.com?subject=${subject}&body=${body}`;
+    const btn = f.querySelector('button[type="submit"]');
+    btn.textContent = 'Enviando…';
+    btn.disabled = true;
+    const res = await fetch(f.action, {
+      method: 'POST',
+      body: new FormData(f),
+      headers: { 'Accept': 'application/json' }
+    });
+    if(res.ok){
+      f.innerHTML = '<p style="color:var(--cyan);font-family:var(--mono);font-size:15px;padding:20px 0">✓ Mensaje enviado. Te respondo a la brevedad.</p>';
+    } else {
+      btn.textContent = 'Error — intentá de nuevo';
+      btn.disabled = false;
+    }
   });
 })();
 </script>
