@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Marco Medina — Data Scientist & AI Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-2:#0f1620;
+    --bg-3:#141c28;
+    --border:#1f2937;
+    --border-hi:#2a3548;
+    --text-hi:#e6edf3;
+    --text-mid:#8b98a8;
+    --text-lo:#5a6776;
+    --cyan:#00d4aa;
+    --cyan-dim:#00d4aa22;
+    --violet:#7c3aed;
+    --violet-dim:#7c3aed22;
+    --grad: linear-gradient(135deg, #00d4aa 0%, #7c3aed 100%);
+    --risk-bajo:#10b981;
+    --risk-medio:#f59e0b;
+    --risk-alto:#f97316;
+    --risk-muy-alto:#ef4444;
+    --sans:'Space Grotesk', system-ui, sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --ease: cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:var(--sans);
+    background:var(--bg);
+    color:var(--text-hi);
+    line-height:1.55;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    cursor:none;
+  }
+  body.no-custom-cursor{ cursor:auto; }
+  body.no-custom-cursor .cursor-dot,
+  body.no-custom-cursor .cursor-ring{ display:none; }
+
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:none; border:none; background:none; color:inherit; }
+
+  /* ====== Custom cursor ====== */
+  .cursor-dot, .cursor-ring{
+    position:fixed; top:0; left:0; pointer-events:none; z-index:9999;
+    border-radius:50%; transform:translate(-50%,-50%);
+    mix-blend-mode:difference;
+  }
+  .cursor-dot{
+    width:6px; height:6px; background:var(--cyan);
+    transition:width .2s var(--ease), height .2s var(--ease);
+  }
+  .cursor-ring{
+    width:36px; height:36px; border:1px solid rgba(0,212,170,.6);
+    transition:width .25s var(--ease), height .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
+  }
+  .cursor-ring.hover{
+    width:54px; height:54px; border-color:var(--violet);
+    background:rgba(124,58,237,.08);
+  }
+  @media (max-width: 760px){
+    body{ cursor:auto; }
+    .cursor-dot,.cursor-ring{ display:none; }
+  }
+
+  /* ====== Navbar ====== */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:18px clamp(20px, 5vw, 60px);
+    display:flex; align-items:center; justify-content:space-between;
+    background:transparent; border-bottom:1px solid transparent;
+    transition: background .35s var(--ease), border-color .35s var(--ease), backdrop-filter .35s var(--ease), padding .3s var(--ease);
+  }
+  .nav.scrolled{
+    background:rgba(13,17,23,.72);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border-bottom-color:var(--border);
+    padding:12px clamp(20px, 5vw, 60px);
+  }
+  .nav-logo{
+    font-family:var(--mono); font-size:14px; font-weight:600; letter-spacing:.02em;
+    display:flex; align-items:center; gap:10px;
+  }
+  .nav-logo .dot{
+    width:8px; height:8px; background:var(--cyan); border-radius:50%;
+    box-shadow:0 0 12px var(--cyan);
+    animation: pulseDot 2s ease-in-out infinite;
+  }
+  @keyframes pulseDot{ 0%,100%{ opacity:1 } 50%{ opacity:.45 } }
+  .nav-links{ display:flex; gap:28px; align-items:center; }
+  .nav-links a{
+    font-size:13px; font-weight:500; color:var(--text-mid); letter-spacing:.02em;
+    position:relative; transition:color .2s var(--ease); padding:6px 0;
+  }
+  .nav-links a:hover{ color:var(--text-hi); }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:0; height:1px; width:0;
+    background:var(--cyan); transition:width .25s var(--ease);
+  }
+  .nav-links a:hover::after{ width:100%; }
+  .nav-cta{
+    font-size:12px; font-family:var(--mono); padding:8px 14px;
+    border:1px solid var(--border-hi); border-radius:4px;
+    color:var(--text-hi); transition:all .2s var(--ease);
+  }
+  .nav-cta:hover{ border-color:var(--cyan); color:var(--cyan); }
+  @media (max-width: 760px){
+    .nav-links a:not(.nav-cta){ display:none; }
+  }
+
+  /* ====== Hero ====== */
+  .hero{
+    position:relative; min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    padding: 120px clamp(20px, 5vw, 60px) 80px;
+    overflow:hidden;
+  }
+  #neural-canvas{
+    position:absolute; inset:0; width:100%; height:100%;
+    z-index:0; opacity:.85;
+  }
+  .hero::after{
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse at 50% 50%, transparent 0%, rgba(13,17,23,.55) 65%, var(--bg) 100%);
+    pointer-events:none; z-index:1;
+  }
+  .hero-inner{
+    position:relative; z-index:2; max-width:1100px; width:100%;
+    display:flex; flex-direction:column; align-items:flex-start;
+  }
+  .hero-tag{
+    font-family:var(--mono); font-size:12px; color:var(--cyan);
+    letter-spacing:.12em; text-transform:uppercase;
+    padding:6px 12px; border:1px solid var(--cyan-dim);
+    background:rgba(0,212,170,.04);
+    border-radius:4px; margin-bottom:28px;
+    display:inline-flex; align-items:center; gap:10px;
+    animation: fadeUp .8s var(--ease) both;
+  }
+  .hero-tag::before{
+    content:''; width:6px; height:6px; background:var(--cyan); border-radius:50%;
+    box-shadow:0 0 10px var(--cyan);
+    animation: pulseDot 1.8s ease-in-out infinite;
+  }
+  .hero h1{
+    font-size: clamp(48px, 9vw, 112px);
+    font-weight:700; letter-spacing:-0.03em; line-height:1;
+    margin-bottom:18px;
+    background:var(--grad);
+    background-size:200% 200%;
+    -webkit-background-clip:text; background-clip:text;
+    color:transparent;
+    animation: fadeUp .8s var(--ease) .15s both, gradientShift 8s ease-in-out infinite;
+  }
+  @keyframes gradientShift{ 0%,100%{ background-position:0% 50% } 50%{ background-position:100% 50% } }
+  .hero h2{
+    font-family:var(--mono);
+    font-size: clamp(20px, 3.2vw, 32px);
+    font-weight:500; color:var(--text-hi);
+    margin-bottom:24px; min-height:1.4em;
+    animation: fadeUp .8s var(--ease) .3s both;
+  }
+  .typer{ color:var(--cyan); }
+  .caret{
+    display:inline-block; width:3px; height:1em; background:var(--cyan);
+    transform:translateY(4px); margin-left:2px;
+    animation: blink 1s steps(2) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0 } }
+  .hero-desc{
+    max-width:620px; color:var(--text-mid); font-size:17px; line-height:1.65;
+    margin-bottom:40px;
+    animation: fadeUp .8s var(--ease) .45s both;
+  }
+  .hero-ctas{
+    display:flex; gap:14px; flex-wrap:wrap;
+    animation: fadeUp .8s var(--ease) .6s both;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:14px 22px; border-radius:6px;
+    font-family:var(--mono); font-size:13px; font-weight:500;
+    letter-spacing:.02em; transition:all .25s var(--ease);
+    border:1px solid transparent; cursor:none;
+  }
+  .btn-primary{
+    background:var(--cyan); color:#062018;
+    box-shadow: 0 0 0 0 rgba(0,212,170,.45);
+    animation: glowPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes glowPulse{
+    0%,100%{ box-shadow: 0 0 0 0 rgba(0,212,170,.55), 0 0 20px rgba(0,212,170,.25) }
+    50%{ box-shadow: 0 0 0 12px rgba(0,212,170,0), 0 0 36px rgba(0,212,170,.45) }
+  }
+  .btn-primary:hover{ transform:translateY(-2px); background:#1ae6bd; }
+  .btn-ghost{
+    background:transparent; color:var(--text-hi); border-color:var(--border-hi);
+  }
+  .btn-ghost:hover{ border-color:var(--cyan); color:var(--cyan); transform:translateY(-2px); }
+
+  .hero-scroll-hint{
+    position:absolute; bottom:30px; left:50%; transform:translateX(-50%);
+    font-family:var(--mono); font-size:11px; color:var(--text-lo);
+    letter-spacing:.16em; text-transform:uppercase;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    z-index:2;
+  }
+  .hero-scroll-hint .line{
+    width:1px; height:40px; background:linear-gradient(to bottom, var(--cyan), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine{ 0%{ transform:scaleY(0); transform-origin:top } 50%{ transform:scaleY(1); transform-origin:top } 51%{ transform-origin:bottom } 100%{ transform:scaleY(0); transform-origin:bottom } }
+
+  /* ====== Sections ====== */
+  section{ padding: clamp(80px, 12vh, 140px) clamp(20px, 5vw, 60px); position:relative; }
+  .container{ max-width:1200px; margin:0 auto; }
+  .sec-head{ margin-bottom:60px; max-width:760px; }
+  .sec-eyebrow{
+    font-family:var(--mono); font-size:11px; color:var(--cyan);
+    letter-spacing:.16em; text-transform:uppercase;
+    display:inline-flex; align-items:center; gap:10px;
+    margin-bottom:18px;
+  }
+  .sec-eyebrow::before{
+    content:''; width:24px; height:1px; background:var(--cyan);
+  }
+  .sec-title{
+    font-size: clamp(32px, 5vw, 52px); font-weight:700;
+    letter-spacing:-0.025em; line-height:1.05;
+  }
+  .sec-title em{
+    font-style:normal;
+    background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .sec-sub{
+    margin-top:18px; color:var(--text-mid); font-size:16px; max-width:600px;
+  }
+
+  /* reveal */
+  .reveal{ opacity:0; transform:translateY(40px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+  .reveal.in{ opacity:1; transform:none; }
+
+  /* ====== About ====== */
+  .about{ background:linear-gradient(to bottom, var(--bg) 0%, var(--bg-2) 100%); }
+  .about-grid{ display:grid; grid-template-columns: 1.1fr 1fr; gap:60px; align-items:center; }
+  @media (max-width: 900px){ .about-grid{ grid-template-columns:1fr; gap:40px; } }
+  .about-text p{ color:var(--text-mid); font-size:16px; margin-bottom:18px; line-height:1.7; }
+  .about-text p strong{ color:var(--text-hi); font-weight:600; }
+  .metrics{
+    display:grid; grid-template-columns:1fr; gap:16px;
+  }
+  .metric{
+    background:var(--bg-3); border:1px solid var(--border);
+    border-radius:8px; padding:24px;
+    display:flex; align-items:center; gap:20px;
+    transition: border-color .25s var(--ease), transform .25s var(--ease);
+    position:relative; overflow:hidden;
+  }
+  .metric::before{
+    content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:var(--grad); opacity:.8;
+  }
+  .metric:hover{ border-color:var(--border-hi); transform:translateX(4px); }
+  .metric-icon{
+    width:48px; height:48px; flex-shrink:0;
+    border-radius:8px; background:rgba(0,212,170,.08);
+    border:1px solid var(--cyan-dim);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--cyan);
+  }
+  .metric-value{
+    font-family:var(--mono); font-size:36px; font-weight:600;
+    color:var(--text-hi); letter-spacing:-0.02em; line-height:1;
+    font-variant-numeric: tabular-nums;
+  }
+  .metric-label{
+    margin-top:6px; font-size:13px; color:var(--text-mid);
+  }
+
+  /* ====== Skills ====== */
+  .skills-groups{ display:flex; flex-direction:column; gap:36px; }
+  .skill-group-title{
+    font-family:var(--mono); font-size:12px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--text-mid);
+    margin-bottom:16px; display:flex; align-items:center; gap:14px;
+  }
+  .skill-group-title::after{
+    content:''; flex:1; height:1px; background:var(--border);
+  }
+  .skill-group-title .num{
+    color:var(--cyan); font-weight:500;
+  }
+  .skill-chips{ display:flex; flex-wrap:wrap; gap:10px; }
+  .chip{
+    font-family:var(--mono); font-size:13px; font-weight:400;
+    padding:9px 14px; border-radius:6px;
+    background:var(--bg-3); border:1px solid var(--border);
+    color:var(--text-hi); transition:all .25s var(--ease);
+    opacity:0; transform:translateY(20px);
+    cursor:none;
+  }
+  .chip.in{ opacity:1; transform:none; }
+  .chip:hover{
+    border-color:var(--cyan); color:var(--cyan);
+    box-shadow: 0 0 16px rgba(0,212,170,.18);
+    transform:translateY(-2px);
+  }
+
+  /* ====== Projects ====== */
+  .projects{ background:linear-gradient(to bottom, var(--bg-2) 0%, var(--bg) 100%); }
+  .project-grid{
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+    gap:28px;
+  }
+  @media (max-width: 600px){ .project-grid{ grid-template-columns:1fr; } }
+  .pcard{
+    background:var(--bg-2); border:1px solid var(--border);
+    border-radius:12px; overflow:hidden; position:relative;
+    transition: transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
+    display:flex; flex-direction:column;
+  }
+  .pcard::before{
+    content:''; position:absolute; inset:0; border-radius:12px;
+    padding:1px; background:var(--grad);
+    -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity:0; transition:opacity .35s var(--ease);
+    pointer-events:none;
+  }
+  .pcard:hover{
+    transform:translateY(-8px);
+    box-shadow: 0 24px 40px -16px rgba(0,212,170,.18), 0 12px 24px -12px rgba(124,58,237,.18);
+  }
+  .pcard:hover::before{ opacity:1; }
+
+  .pcard-badge{
+    position:absolute; top:14px; right:14px; z-index:3;
+    font-family:var(--mono); font-size:10px; letter-spacing:.12em;
+    text-transform:uppercase; font-weight:600;
+    padding:5px 9px; border-radius:4px;
+    background:linear-gradient(135deg, rgba(0,212,170,.18), rgba(124,58,237,.18));
+    border:1px solid var(--cyan-dim); color:var(--cyan);
+  }
+  /* browser mockup */
+  .mockup{
+    background:#080d14; border-bottom:1px solid var(--border);
+    aspect-ratio: 16/10; position:relative; overflow:hidden;
+  }
+  .mockup-bar{
+    height:32px; background:#0b1119; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; padding:0 14px; gap:7px;
+  }
+  .mockup-bar .dot{ width:10px; height:10px; border-radius:50%; }
+  .mockup-bar .d1{ background:#ff5f57; }
+  .mockup-bar .d2{ background:#febc2e; }
+  .mockup-bar .d3{ background:#28c840; }
+  .mockup-bar .url{
+    margin-left:14px; flex:1; height:18px; border-radius:4px;
+    background:#080d14; border:1px solid var(--border);
+    font-family:var(--mono); font-size:10px; color:var(--text-lo);
+    display:flex; align-items:center; padding:0 10px;
+  }
+  .mockup-stage{
+    position:absolute; inset:32px 0 0 0;
+    padding:18px;
+    background: var(--bg-2);
+    background-image:
+      linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* mockup 1: risk map */
+  .m-map{ display:grid; grid-template-columns: 1.4fr 1fr; gap:14px; height:100%; }
+  .m-map-grid{
+    display:grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(5, 1fr);
+    gap:3px;
+  }
+  .m-cell{
+    border-radius:3px; opacity:.85;
+    animation: cellFlicker 4s ease-in-out infinite;
+  }
+  @keyframes cellFlicker{ 0%,100%{ opacity:.85 } 50%{ opacity:1 } }
+  .m-bars{ display:flex; flex-direction:column; justify-content:space-around; gap:6px; }
+  .m-bar-row{ display:flex; align-items:center; gap:8px; height:14px; }
+  .m-bar-label{ font-family:var(--mono); font-size:8px; color:var(--text-lo); width:40px; }
+  .m-bar-track{ flex:1; height:6px; background:var(--bg-3); border-radius:3px; overflow:hidden; }
+  .m-bar-fill{ height:100%; background:var(--grad); border-radius:3px; animation: barGrow 2s var(--ease) both; transform-origin:left; }
+  @keyframes barGrow{ from{ transform:scaleX(0) } to{ transform:scaleX(1) } }
+
+  /* mockup 2: neural net */
+  .m-nn{ position:relative; width:100%; height:100%; }
+  .m-nn svg{ width:100%; height:100%; }
+  .nn-node{ animation: nnPulse 2.4s ease-in-out infinite; transform-origin:center; transform-box:fill-box; }
+  .nn-node:nth-child(3n){ animation-delay:.4s }
+  .nn-node:nth-child(3n+1){ animation-delay:.8s }
+  @keyframes nnPulse{ 0%,100%{ opacity:.7; r:5 } 50%{ opacity:1; r:6 } }
+  .nn-line{ stroke-dasharray:200; stroke-dashoffset:200; animation: nnLine 3s var(--ease) infinite; }
+  @keyframes nnLine{ 0%{ stroke-dashoffset:200; opacity:0 } 30%{ opacity:.6 } 70%{ opacity:.4 } 100%{ stroke-dashoffset:0; opacity:0 } }
+
+  /* mockup 3: line chart */
+  .m-line svg{ width:100%; height:100%; }
+  .m-line-path{ stroke-dasharray:800; stroke-dashoffset:800; animation: drawLine 3s var(--ease) infinite alternate; }
+  @keyframes drawLine{ to{ stroke-dashoffset:0 } }
+
+  /* mockup 4: dashboard */
+  .m-dash{ display:grid; grid-template-columns:1fr 1fr; grid-template-rows:auto 1fr; gap:10px; height:100%; }
+  .m-dash-kpi{
+    background:var(--bg-3); border:1px solid var(--border); border-radius:5px;
+    padding:8px 10px;
+  }
+  .m-dash-kpi .v{ font-family:var(--mono); font-size:14px; font-weight:600; color:var(--cyan); }
+  .m-dash-kpi .l{ font-family:var(--mono); font-size:7px; letter-spacing:.12em; text-transform:uppercase; color:var(--text-lo); margin-top:2px; }
+  .m-radar{ grid-column: 1 / -1; display:flex; align-items:center; justify-content:center; }
+  .m-radar svg{ width:100%; height:100%; max-height:140px; }
+  .m-radar polygon.shape{ animation: radarRotate 12s linear infinite; transform-origin:center; transform-box:fill-box; }
+  @keyframes radarRotate{ to{ transform:rotate(360deg) } }
+
+  /* pcard body */
+  .pcard-body{ padding:24px 22px 22px; display:flex; flex-direction:column; flex:1; }
+  .pcard-title{
+    font-size:22px; font-weight:600; letter-spacing:-0.015em;
+    margin-bottom:10px; line-height:1.25;
+  }
+  .pcard-desc{
+    font-size:14px; color:var(--text-mid); line-height:1.6; margin-bottom:18px; flex:1;
+  }
+  .pcard-metrics{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
+  .pmetric{
+    font-family:var(--mono); font-size:10.5px; font-weight:500;
+    padding:4px 8px; border-radius:4px;
+    background:rgba(0,212,170,.07); color:var(--cyan);
+    border:1px solid var(--cyan-dim); letter-spacing:.02em;
+  }
+  .pcard-stack{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:22px; }
+  .pstack{
+    font-family:var(--mono); font-size:10.5px; font-weight:500;
+    padding:4px 9px; border-radius:4px;
+    background:var(--bg-3); color:var(--text-mid);
+    border:1px solid var(--border);
+  }
+  .pcard-cta{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:13px; font-weight:500;
+    color:var(--text-hi);
+    padding:11px 16px; border-radius:6px;
+    border:1px solid var(--border-hi); width:fit-content;
+    transition: all .25s var(--ease);
+  }
+  .pcard-cta:hover{ border-color:var(--cyan); color:var(--cyan); }
+  .pcard-cta svg{ transition:transform .25s var(--ease); }
+  .pcard-cta:hover svg{ transform:translateX(2px); }
+
+  /* ====== Education ====== */
+  .timeline{
+    position:relative; padding-left:40px; max-width:780px;
+  }
+  .timeline::before{
+    content:''; position:absolute; left:8px; top:8px; bottom:8px; width:1px;
+    background: linear-gradient(to bottom, var(--cyan), var(--violet) 70%, transparent);
+  }
+  .tl-item{ position:relative; padding-bottom:36px; }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-dot{
+    position:absolute; left:-40px; top:6px; width:17px; height:17px;
+    border-radius:50%; background:var(--bg); border:2px solid var(--cyan);
+    box-shadow: 0 0 0 4px rgba(0,212,170,.1), 0 0 14px rgba(0,212,170,.4);
+  }
+  .tl-status{
+    font-family:var(--mono); font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--cyan); margin-bottom:8px;
+  }
+  .tl-title{ font-size:20px; font-weight:600; margin-bottom:4px; }
+  .tl-org{ color:var(--text-mid); font-size:14px; }
+  .tl-meta{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .tl-pill{
+    font-family:var(--mono); font-size:10.5px; font-weight:500;
+    padding:4px 9px; border-radius:4px;
+    background:var(--bg-3); color:var(--text-mid);
+    border:1px solid var(--border); letter-spacing:.02em;
+  }
+
+  /* ====== Contact ====== */
+  .contact{ background:var(--bg-2); border-top:1px solid var(--border); }
+  .contact-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:60px; align-items:start; }
+  @media (max-width: 900px){ .contact-grid{ grid-template-columns:1fr; gap:40px; } }
+  .contact h2{
+    font-size: clamp(32px, 5vw, 56px); font-weight:700; line-height:1.05;
+    letter-spacing:-0.025em; margin-bottom:20px;
+  }
+  .contact h2 em{
+    font-style:normal;
+    background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .contact-links{ display:flex; flex-direction:column; gap:12px; margin-top:30px; }
+  .clink{
+    display:flex; align-items:center; gap:16px;
+    padding:16px 20px; border:1px solid var(--border); border-radius:8px;
+    background:var(--bg-3); transition: all .25s var(--ease);
+  }
+  .clink:hover{ border-color:var(--cyan); transform:translateX(4px); }
+  .clink svg{ color:var(--cyan); }
+  .clink-label{ font-family:var(--mono); font-size:11px; color:var(--text-lo); letter-spacing:.1em; text-transform:uppercase; }
+  .clink-val{ font-size:15px; color:var(--text-hi); }
+
+  form{ display:flex; flex-direction:column; gap:14px; }
+  .field{
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .field label{
+    font-family:var(--mono); font-size:11px; color:var(--text-mid);
+    letter-spacing:.1em; text-transform:uppercase;
+  }
+  .field input, .field textarea{
+    background:var(--bg-3); border:1px solid var(--border);
+    color:var(--text-hi); font-family:var(--sans); font-size:14px;
+    padding:13px 14px; border-radius:6px; outline:none;
+    transition: border-color .2s var(--ease);
+    resize:vertical;
+  }
+  .field input:focus, .field textarea:focus{ border-color:var(--cyan); }
+  form .btn-primary{ align-self:flex-start; margin-top:10px; }
+
+  footer{
+    padding: 30px clamp(20px, 5vw, 60px);
+    border-top:1px solid var(--border);
+    display:flex; justify-content:space-between; align-items:center;
+    gap:20px; flex-wrap:wrap;
+    font-family:var(--mono); font-size:12px; color:var(--text-lo);
+  }
+  footer .left{ display:flex; gap:18px; align-items:center; }
+  footer a:hover{ color:var(--cyan); }
+
+  @keyframes fadeUp{ from{ opacity:0; transform:translateY(24px) } to{ opacity:1; transform:none } }
+</style>
+</head>
+<body>
+
+<!-- custom cursor -->
+<div class="cursor-ring"></div>
+<div class="cursor-dot"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#top" class="nav-logo">
+    <span class="dot"></span>
+    <span>MARCO_MEDINA</span>
+  </a>
+  <div class="nav-links">
+    <a href="#sobre">Sobre</a>
+    <a href="#skills">Skills</a>
+    <a href="#proyectos">Proyectos</a>
+    <a href="#educacion">Educación</a>
+    <a href="#contacto" class="nav-cta">Contacto →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <canvas id="neural-canvas"></canvas>
+  <div class="hero-inner">
+    <span class="hero-tag">Disponible para proyectos · Argentina</span>
+    <h1>Marco<br/>Medina</h1>
+    <h2>
+      <span class="typer" id="typer">Data Scientist</span><span class="caret"></span>
+    </h2>
+    <p class="hero-desc">
+      Transformo datos en decisiones. Construyo IA desde los fundamentos. Estudiante avanzado de Ciencia de Datos e IA, especializado en Machine Learning, análisis predictivo y desarrollo de aplicaciones con Streamlit.
+    </p>
+    <div class="hero-ctas">
+      <a href="#proyectos" class="btn btn-primary">
+        Ver Proyectos
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+      </a>
+      <a href="https://github.com/MedinaMarco" target="_blank" rel="noopener" class="btn btn-ghost">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2.03c-3.2.69-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.19 1.19a11 11 0 0 1 5.81 0c2.22-1.5 3.19-1.19 3.19-1.19.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="line"></div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section class="about" id="sobre">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">01 — Sobre mí</div>
+      <h2 class="sec-title">De los datos a las <em>decisiones</em>.</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>Soy <strong>apasionado por aplicar IA a problemas reales</strong>. Trabajo desde análisis exploratorio y limpieza de datos hasta modelos productivos con métricas verificables — y disfruto especialmente cuando puedo explicar lo que el modelo hace por dentro.</p>
+        <p>Construí un <strong>MLP desde cero con NumPy</strong> (sin frameworks) para entender backpropagation en su forma más cruda, y entrené un Random Forest sobre <strong>~5 millones de hechos delictivos</strong> con feature engineering territorial para Argentina.</p>
+        <p>Además, mi paso por <strong>atención al cliente</strong> me dio algo que ningún paper enseña: traducir requerimientos confusos a preguntas accionables y comunicar resultados sin perder al interlocutor.</p>
+      </div>
+      <div class="metrics">
+        <div class="metric reveal">
+          <div class="metric-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 5v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8l-5-5H5a2 2 0 0 0-2 2z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg>
+          </div>
+          <div>
+            <div class="metric-value" data-target="5" data-suffix="M+">0</div>
+            <div class="metric-label">Registros analizados</div>
+          </div>
+        </div>
+        <div class="metric reveal">
+          <div class="metric-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+          </div>
+          <div>
+            <div class="metric-value" data-target="80" data-suffix="%">0</div>
+            <div class="metric-label">Accuracy en modelo productivo</div>
+          </div>
+        </div>
+        <div class="metric reveal">
+          <div class="metric-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="5" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h3M7 18h3M14 7l3 4M14 17l3-4"/></svg>
+          </div>
+          <div>
+            <div class="metric-value" data-target="6" data-suffix="">0</div>
+            <div class="metric-label">Actos narrativos · MLP from scratch</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">02 — Stack técnico</div>
+      <h2 class="sec-title">Herramientas que <em>utilizo</em>.</h2>
+      <p class="sec-sub">Sin barras de progreso ni autopercepción de "nivel 8/10". Cada cosa acá la usé en un proyecto que terminé.</p>
+    </div>
+    <div class="skills-groups">
+      <div class="skill-group reveal">
+        <div class="skill-group-title"><span class="num">01</span> Lenguajes & Datos<span></span></div>
+        <div class="skill-chips">
+          <span class="chip">Python</span><span class="chip">R</span><span class="chip">SQL</span><span class="chip">Pandas</span><span class="chip">NumPy</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title"><span class="num">02</span> Machine Learning</div>
+        <div class="skill-chips">
+          <span class="chip">Scikit-learn</span><span class="chip">Random Forest</span><span class="chip">Backpropagation</span><span class="chip">Naive Bayes</span><span class="chip">N-Gramas</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title"><span class="num">03</span> Visualización</div>
+        <div class="skill-chips">
+          <span class="chip">Matplotlib</span><span class="chip">Seaborn</span><span class="chip">Plotly</span><span class="chip">ggplot2</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title"><span class="num">04</span> Herramientas & Deploy</div>
+        <div class="skill-chips">
+          <span class="chip">Streamlit</span><span class="chip">Git</span><span class="chip">GitHub</span><span class="chip">Jupyter</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title"><span class="num">05</span> IA & Lógica</div>
+        <div class="skill-chips">
+          <span class="chip">Redes Neuronales</span><span class="chip">FOIL</span><span class="chip">Prolog</span><span class="chip">Análisis de Audio</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROYECTOS -->
+<section class="projects" id="proyectos">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">03 — Proyectos seleccionados</div>
+      <h2 class="sec-title">Trabajos <em>realizados</em>.</h2>
+      <p class="sec-sub">Cuatro proyectos que cubren el rango: desde un sistema de análisis territorial sobre ~5M de registros hasta una app educativa que enseña backprop paso a paso.</p>
+    </div>
+    <div class="project-grid">
+
+      <!-- P1: SAT Zonas de Riesgo -->
+      <article class="pcard reveal">
+        <span class="pcard-badge">Destacado ★</span>
+        <div class="mockup">
+          <div class="mockup-bar">
+            <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
+            <div class="url">sat-dashboard.streamlit.app/zonas-riesgo</div>
+          </div>
+          <div class="mockup-stage">
+            <div class="m-map">
+              <div class="m-map-grid" id="riskGrid"></div>
+              <div class="m-bars">
+                <div class="m-bar-row"><span class="m-bar-label">poblac.</span><div class="m-bar-track"><div class="m-bar-fill" style="width:88%"></div></div></div>
+                <div class="m-bar-row"><span class="m-bar-label">densidad</span><div class="m-bar-track"><div class="m-bar-fill" style="width:72%"></div></div></div>
+                <div class="m-bar-row"><span class="m-bar-label">tasa_h</span><div class="m-bar-track"><div class="m-bar-fill" style="width:64%"></div></div></div>
+                <div class="m-bar-row"><span class="m-bar-label">tasa_r</span><div class="m-bar-track"><div class="m-bar-fill" style="width:52%"></div></div></div>
+                <div class="m-bar-row"><span class="m-bar-label">arma_f</span><div class="m-bar-track"><div class="m-bar-fill" style="width:41%"></div></div></div>
+                <div class="m-bar-row"><span class="m-bar-label">tendencia</span><div class="m-bar-track"><div class="m-bar-fill" style="width:33%"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pcard-body">
+          <h3 class="pcard-title">SAT Dashboard: Predicción de Zonas de Riesgo en Argentina</h3>
+          <p class="pcard-desc">Sistema de análisis territorial que clasifica el nivel de riesgo delictivo por departamento usando Random Forest, entrenado sobre datos reales del Ministerio de Seguridad de la Nación.</p>
+          <div class="pcard-metrics">
+            <span class="pmetric">~80% Accuracy</span>
+            <span class="pmetric">CV 5-fold: ~79%</span>
+            <span class="pmetric">13 features</span>
+            <span class="pmetric">300 árboles</span>
+            <span class="pmetric">~5M registros</span>
+            <span class="pmetric">2017–2024</span>
+          </div>
+          <div class="pcard-stack">
+            <span class="pstack">Python</span><span class="pstack">Streamlit</span><span class="pstack">Scikit-learn</span><span class="pstack">Plotly</span><span class="pstack">Pandas</span><span class="pstack">API CKAN</span>
+          </div>
+          <a class="pcard-cta" href="https://github.com/MedinaMarco/Zonas-de-Riesgo" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2.03c-3.2.69-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.19 1.19a11 11 0 0 1 5.81 0c2.22-1.5 3.19-1.19 3.19-1.19.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+            Ver en GitHub
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- P2: NeuroLab -->
+      <article class="pcard reveal">
+        <div class="mockup">
+          <div class="mockup-bar">
+            <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
+            <div class="url">neurolab.streamlit.app/backprop</div>
+          </div>
+          <div class="mockup-stage">
+            <div class="m-nn">
+              <svg viewBox="0 0 360 200" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <linearGradient id="nnGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#00d4aa"/>
+                    <stop offset="100%" stop-color="#7c3aed"/>
+                  </linearGradient>
+                </defs>
+                <!-- connections -->
+                <g stroke="url(#nnGrad)" stroke-width="1" opacity=".35" fill="none">
+                  <line class="nn-line" x1="40" y1="50" x2="160" y2="40" />
+                  <line class="nn-line" x1="40" y1="50" x2="160" y2="100" />
+                  <line class="nn-line" x1="40" y1="50" x2="160" y2="160" />
+                  <line class="nn-line" x1="40" y1="100" x2="160" y2="40" />
+                  <line class="nn-line" x1="40" y1="100" x2="160" y2="100" />
+                  <line class="nn-line" x1="40" y1="100" x2="160" y2="160" />
+                  <line class="nn-line" x1="40" y1="150" x2="160" y2="40" />
+                  <line class="nn-line" x1="40" y1="150" x2="160" y2="100" />
+                  <line class="nn-line" x1="40" y1="150" x2="160" y2="160" />
+                  <line class="nn-line" x1="160" y1="40" x2="280" y2="70" />
+                  <line class="nn-line" x1="160" y1="40" x2="280" y2="130" />
+                  <line class="nn-line" x1="160" y1="100" x2="280" y2="70" />
+                  <line class="nn-line" x1="160" y1="100" x2="280" y2="130" />
+                  <line class="nn-line" x1="160" y1="160" x2="280" y2="70" />
+                  <line class="nn-line" x1="160" y1="160" x2="280" y2="130" />
+                </g>
+                <!-- nodes -->
+                <g>
+                  <circle class="nn-node" cx="40" cy="50" r="5" fill="#00d4aa"/>
+                  <circle class="nn-node" cx="40" cy="100" r="5" fill="#00d4aa"/>
+                  <circle class="nn-node" cx="40" cy="150" r="5" fill="#00d4aa"/>
+                  <circle class="nn-node" cx="160" cy="40" r="5" fill="#4cb8d8"/>
+                  <circle class="nn-node" cx="160" cy="100" r="5" fill="#4cb8d8"/>
+                  <circle class="nn-node" cx="160" cy="160" r="5" fill="#4cb8d8"/>
+                  <circle class="nn-node" cx="280" cy="70" r="5" fill="#7c3aed"/>
+                  <circle class="nn-node" cx="280" cy="130" r="5" fill="#7c3aed"/>
+                </g>
+                <!-- labels -->
+                <g font-family="JetBrains Mono" font-size="7" fill="#5a6776">
+                  <text x="20" y="184" text-anchor="middle">input</text>
+                  <text x="160" y="184" text-anchor="middle">hidden</text>
+                  <text x="280" y="184" text-anchor="middle">output</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="pcard-body">
+          <h3 class="pcard-title">NeuroLab: Aprendé Redes Neuronales Desde Cero</h3>
+          <p class="pcard-desc">App educativa interactiva que desmitifica el deep learning: MLP implementado desde cero con NumPy (sin TensorFlow ni PyTorch). 6 actos narrativos: desde separación lineal hasta backpropagation en vivo.</p>
+          <div class="pcard-metrics">
+            <span class="pmetric">MLP from scratch</span>
+            <span class="pmetric">Sin frameworks</span>
+            <span class="pmetric">6 actos</span>
+            <span class="pmetric">Backprop paso a paso</span>
+          </div>
+          <div class="pcard-stack">
+            <span class="pstack">Python</span><span class="pstack">NumPy</span><span class="pstack">Streamlit</span><span class="pstack">Plotly</span><span class="pstack">Matplotlib</span>
+          </div>
+          <a class="pcard-cta" href="https://github.com/MedinaMarco/Neurolab" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2.03c-3.2.69-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.19 1.19a11 11 0 0 1 5.81 0c2.22-1.5 3.19-1.19 3.19-1.19.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+            Ver en GitHub
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- P3: Recompra -->
+      <article class="pcard reveal">
+        <div class="mockup">
+          <div class="mockup-bar">
+            <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
+            <div class="url">jupyter/análisis-recompra.ipynb</div>
+          </div>
+          <div class="mockup-stage">
+            <div class="m-line">
+              <svg viewBox="0 0 360 200" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#00d4aa"/>
+                    <stop offset="100%" stop-color="#7c3aed"/>
+                  </linearGradient>
+                  <linearGradient id="lineFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#00d4aa" stop-opacity=".25"/>
+                    <stop offset="100%" stop-color="#00d4aa" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <!-- grid -->
+                <g stroke="#1f2937" stroke-width=".5">
+                  <line x1="0" y1="40" x2="360" y2="40"/>
+                  <line x1="0" y1="80" x2="360" y2="80"/>
+                  <line x1="0" y1="120" x2="360" y2="120"/>
+                  <line x1="0" y1="160" x2="360" y2="160"/>
+                </g>
+                <!-- area -->
+                <path d="M0,150 L30,140 L60,130 L90,110 L120,120 L150,90 L180,100 L210,70 L240,80 L270,50 L300,55 L330,30 L360,40 L360,200 L0,200 Z" fill="url(#lineFill)"/>
+                <!-- line -->
+                <path class="m-line-path" d="M0,150 L30,140 L60,130 L90,110 L120,120 L150,90 L180,100 L210,70 L240,80 L270,50 L300,55 L330,30 L360,40"
+                  fill="none" stroke="url(#lineGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- dots -->
+                <g fill="#00d4aa">
+                  <circle cx="90" cy="110" r="2.5"/>
+                  <circle cx="180" cy="100" r="2.5"/>
+                  <circle cx="270" cy="50" r="2.5" fill="#7c3aed"/>
+                  <circle cx="330" cy="30" r="2.5" fill="#7c3aed"/>
+                </g>
+                <g font-family="JetBrains Mono" font-size="7" fill="#5a6776">
+                  <text x="2" y="190">Q1</text><text x="92" y="190">Q2</text><text x="182" y="190">Q3</text><text x="272" y="190">Q4</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="pcard-body">
+          <h3 class="pcard-title">Análisis de Recompra: Predicción del Comportamiento del Consumidor</h3>
+          <p class="pcard-desc">Análisis predictivo del comportamiento de recompra de clientes. Incluye limpieza de datos, EDA y modelo de predicción para identificar patrones de fidelización.</p>
+          <div class="pcard-stack">
+            <span class="pstack">Python</span><span class="pstack">Pandas</span><span class="pstack">Matplotlib</span><span class="pstack">Seaborn</span>
+          </div>
+          <a class="pcard-cta" href="https://github.com/MedinaMarco/Analisis_Recompra" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2.03c-3.2.69-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.19 1.19a11 11 0 0 1 5.81 0c2.22-1.5 3.19-1.19 3.19-1.19.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+            Ver en GitHub
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- P4: Personalidad -->
+      <article class="pcard reveal">
+        <div class="mockup">
+          <div class="mockup-bar">
+            <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
+            <div class="url">shinyapps.io/personality-dashboard</div>
+          </div>
+          <div class="mockup-stage">
+            <div class="m-dash">
+              <div class="m-dash-kpi"><div class="v">62.4%</div><div class="l">Introvertidos</div></div>
+              <div class="m-dash-kpi"><div class="v">37.6%</div><div class="l">Extrovertidos</div></div>
+              <div class="m-radar">
+                <svg viewBox="-60 -60 120 120">
+                  <g stroke="#1f2937" stroke-width=".7" fill="none">
+                    <polygon points="0,-50 47.5,-15.5 29.4,40.5 -29.4,40.5 -47.5,-15.5"/>
+                    <polygon points="0,-35 33.2,-10.8 20.6,28.3 -20.6,28.3 -33.2,-10.8"/>
+                    <polygon points="0,-20 19,-6.2 11.8,16.2 -11.8,16.2 -19,-6.2"/>
+                    <line x1="0" y1="-50" x2="0" y2="50"/>
+                    <line x1="-47.5" y1="-15.5" x2="47.5" y2="15.5"/>
+                    <line x1="-47.5" y1="15.5" x2="47.5" y2="-15.5"/>
+                  </g>
+                  <polygon class="shape" points="0,-38 35,-12 18,30 -22,28 -30,-10"
+                    fill="rgba(0,212,170,.22)" stroke="#00d4aa" stroke-width="1.5"/>
+                  <polygon points="0,-28 24,-8 14,22 -16,20 -22,-8"
+                    fill="rgba(124,58,237,.18)" stroke="#7c3aed" stroke-width="1.5"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pcard-body">
+          <h3 class="pcard-title">Dashboard: Análisis de Personalidad Introvertido/Extrovertido</h3>
+          <p class="pcard-desc">Dashboard analítico en R para explorar patrones de comportamiento entre perfiles de personalidad a partir de datos de encuestas.</p>
+          <div class="pcard-stack">
+            <span class="pstack">R</span><span class="pstack">ggplot2</span><span class="pstack">Dashboard</span>
+          </div>
+          <a class="pcard-cta" href="https://github.com/MedinaMarco/Introvertido_extrovertido_dashboard-Marco-Medina" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2.03c-3.2.69-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.19 1.19a11 11 0 0 1 5.81 0c2.22-1.5 3.19-1.19 3.19-1.19.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+            Ver en GitHub
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- EDUCACIÓN -->
+<section id="educacion">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">04 — Formación</div>
+      <h2 class="sec-title">Educación.</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-status">En curso · 2023 – Presente</div>
+        <div class="tl-title">Tecnicatura Superior en Ciencia de Datos e IA</div>
+        <div class="tl-org">Instituto Tecnológico Beltrán</div>
+      </div>
+      <div class="tl-item reveal">
+      <div class="tl-dot"></div>
+      <div class="tl-status">En Curso · 2025 - Presente</div>
+      <div class="tl-title">Data Science I</div>
+      <div class="tl-org">CoderHouse</div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-status">Certificación · 29 mar 2026</div>
+        <div class="tl-title">ETL Data Testing</div>
+        <div class="tl-org">Udemy · The Free Range Tester</div>
+        <div class="tl-meta">
+          <span class="tl-pill">Certificado UC-6e06254c</span>
+          <span class="tl-pill">Ref. #0004</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contact" id="contacto">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="sec-eyebrow">05 — Contacto</div>
+        <h2>¿Tenés un proyecto<br/>de datos? <em>Hablemos.</em></h2>
+        <p class="sec-sub">Buscás a alguien para colaborar en un análisis, prototipar un modelo, o discutir cómo abordar un problema de IA — escribime.</p>
+        <div class="contact-links">
+          <a class="clink" href="https://github.com/MedinaMarco" target="_blank" rel="noopener">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2.03c-3.2.69-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.19 1.19a11 11 0 0 1 5.81 0c2.22-1.5 3.19-1.19 3.19-1.19.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+            <div>
+              <div class="clink-label">GitHub</div>
+              <div class="clink-val">@MedinaMarco</div>
+            </div>
+          </a>
+          <a class="clink" href="https://www.linkedin.com/in/marco-medina-castro-247374236/" id="linkedinLink" target="_blank" rel="noopener">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+            <div>
+              <div class="clink-label">LinkedIn</div>
+              <div class="clink-val">Marco Medina Castro</div>
+            </div>
+          </a>
+          <a class="clink" href="mailto:marcomedinacastro2003@gmail.com">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            <div>
+              <div class="clink-label">Email</div>
+              <div class="clink-val">marcomedinacastro2003@gmail.com</div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <form class="reveal" id="contactForm">
+        <div class="field">
+          <label for="name">Nombre</label>
+          <input id="name" type="text" placeholder="Cómo te llamás" required />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="tu@email.com" required />
+        </div>
+        <div class="field">
+          <label for="msg">Mensaje</label>
+          <textarea id="msg" rows="5" placeholder="Contame brevemente qué tenés en mente…" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          Enviar mensaje
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="left">
+    <span>© 2026 Marco Medina</span>
+    <span>·</span>
+    <span>Construido con HTML y CSS</span>
+  </div>
+  <div>
+    <a href="https://github.com/MedinaMarco" target="_blank" rel="noopener">github.com/MedinaMarco</a>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   Custom cursor (magnetic lag)
+   ============================================================ */
+(function(){
+  const dot = document.querySelector('.cursor-dot');
+  const ring = document.querySelector('.cursor-ring');
+  let mx = window.innerWidth/2, my = window.innerHeight/2;
+  let rx = mx, ry = my;
+  window.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`;
+  });
+  function loop(){
+    rx += (mx - rx) * 0.18;
+    ry += (my - ry) * 0.18;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
+    requestAnimationFrame(loop);
+  }
+  loop();
+  // hover targets
+  document.querySelectorAll('a, button, .chip, .pcard, .metric, .clink').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+  });
+})();
+
+/* ============================================================
+   Navbar scroll state
+   ============================================================ */
+(function(){
+  const nav = document.getElementById('nav');
+  const onScroll = () => {
+    if(window.scrollY > 30) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+
+/* ============================================================
+   Typewriter
+   ============================================================ */
+(function(){
+  const el = document.getElementById('typer');
+  const words = ['Data Scientist','ML Engineer','AI Developer','Data Analyst'];
+  let wi = 0, ci = 0, deleting = false;
+  function tick(){
+    const w = words[wi];
+    if(!deleting){
+      ci++;
+      el.textContent = w.slice(0, ci);
+      if(ci === w.length){ deleting = true; setTimeout(tick, 1600); return; }
+    } else {
+      ci--;
+      el.textContent = w.slice(0, ci);
+      if(ci === 0){ deleting = false; wi = (wi+1) % words.length; }
+    }
+    setTimeout(tick, deleting ? 50 : 90);
+  }
+  setTimeout(tick, 900);
+})();
+
+/* ============================================================
+   Neural network canvas (hero background)
+   ============================================================ */
+(function(){
+  const canvas = document.getElementById('neural-canvas');
+  const ctx = canvas.getContext('2d');
+  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+  let W, H, nodes = [];
+  let mouse = { x: -9999, y: -9999, active: false };
+
+  function resize(){
+    const rect = canvas.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    // density relative to area
+    const target = Math.round(Math.min(110, Math.max(40, (W*H)/14000)));
+    nodes = [];
+    for(let i = 0; i < target; i++){
+      nodes.push({
+        x: Math.random()*W, y: Math.random()*H,
+        vx: (Math.random()-0.5)*0.35, vy: (Math.random()-0.5)*0.35,
+        r: Math.random()*1.4 + 0.6
+      });
+    }
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left;
+    mouse.y = e.clientY - r.top;
+    mouse.active = true;
+  });
+  canvas.addEventListener('mouseleave', () => { mouse.active = false; mouse.x = -9999; mouse.y = -9999; });
+
+  const LINK = 130;
+  const MOUSE_R = 140;
+
+  function step(){
+    ctx.clearRect(0, 0, W, H);
+
+    // update + draw nodes
+    for(const n of nodes){
+      // mouse interaction: repel + slight pull on closer side -> here we attract subtly
+      if(mouse.active){
+        const dx = n.x - mouse.x, dy = n.y - mouse.y;
+        const d2 = dx*dx + dy*dy;
+        if(d2 < MOUSE_R*MOUSE_R){
+          const d = Math.sqrt(d2) || 1;
+          const force = (1 - d/MOUSE_R) * 0.5;
+          // half attract, half repel for "magnetic" feel
+          n.vx += (-dx/d) * force * 0.02;
+          n.vy += (-dy/d) * force * 0.02;
+        }
+      }
+      n.x += n.vx; n.y += n.vy;
+      // bounce
+      if(n.x < 0 || n.x > W) n.vx *= -1;
+      if(n.y < 0 || n.y > H) n.vy *= -1;
+      // friction
+      n.vx *= 0.995; n.vy *= 0.995;
+      // minimum drift
+      if(Math.abs(n.vx) < 0.05) n.vx += (Math.random()-0.5)*0.05;
+      if(Math.abs(n.vy) < 0.05) n.vy += (Math.random()-0.5)*0.05;
+
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(0,212,170,0.55)';
+      ctx.fill();
+    }
+
+    // links
+    for(let i = 0; i < nodes.length; i++){
+      for(let j = i+1; j < nodes.length; j++){
+        const a = nodes[i], b = nodes[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const d2 = dx*dx + dy*dy;
+        if(d2 < LINK*LINK){
+          const alpha = (1 - Math.sqrt(d2)/LINK) * 0.35;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = `rgba(0,212,170,${alpha})`;
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      }
+      // mouse links
+      if(mouse.active){
+        const a = nodes[i];
+        const dx = a.x - mouse.x, dy = a.y - mouse.y;
+        const d2 = dx*dx + dy*dy;
+        if(d2 < MOUSE_R*MOUSE_R){
+          const alpha = (1 - Math.sqrt(d2)/MOUSE_R) * 0.55;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y);
+          ctx.strokeStyle = `rgba(124,58,237,${alpha})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(step);
+  }
+  step();
+})();
+
+/* ============================================================
+   Reveal on scroll (IntersectionObserver)
+   ============================================================ */
+(function(){
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+
+/* ============================================================
+   Skills chips: staggered entrance per group
+   ============================================================ */
+(function(){
+  const groups = document.querySelectorAll('.skill-group');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        const chips = e.target.querySelectorAll('.chip');
+        chips.forEach((c, i) => {
+          setTimeout(() => c.classList.add('in'), 80 + i*70);
+        });
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  groups.forEach(g => io.observe(g));
+})();
+
+/* ============================================================
+   Animated counters
+   ============================================================ */
+(function(){
+  const els = document.querySelectorAll('.metric-value');
+  const animate = (el) => {
+    const target = parseFloat(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    const dur = 1600;
+    const t0 = performance.now();
+    const isInt = Number.isInteger(target);
+    function frame(t){
+      const k = Math.min(1, (t - t0)/dur);
+      // ease out cubic
+      const e = 1 - Math.pow(1 - k, 3);
+      const v = target * e;
+      el.textContent = (isInt ? Math.round(v) : v.toFixed(1)) + suffix;
+      if(k < 1) requestAnimationFrame(frame);
+      else el.textContent = (isInt ? target : target.toFixed(1)) + suffix;
+    }
+    requestAnimationFrame(frame);
+  };
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ animate(e.target); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.4 });
+  els.forEach(el => io.observe(el));
+})();
+
+/* ============================================================
+   Risk grid cells (P1 mockup)
+   ============================================================ */
+(function(){
+  const grid = document.getElementById('riskGrid');
+  if(!grid) return;
+  const colors = ['#10b981','#10b981','#f59e0b','#f59e0b','#f97316','#ef4444'];
+  const pattern = [
+    2,3,4,5,4,3,
+    1,2,4,5,5,3,
+    1,2,3,4,5,4,
+    0,1,3,3,4,3,
+    0,1,2,2,3,2
+  ];
+  pattern.forEach((v, i) => {
+    const cell = document.createElement('div');
+    cell.className = 'm-cell';
+    cell.style.background = colors[v];
+    cell.style.animationDelay = (i * 0.05) + 's';
+    grid.appendChild(cell);
+  });
+})();
+
+/* ============================================================
+   Contact form -> mailto
+   ============================================================ */
+(function(){
+  const f = document.getElementById('contactForm');
+  if(!f) return;
+  f.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const msg = document.getElementById('msg').value.trim();
+    const subject = encodeURIComponent(`Contacto desde portfolio — ${name}`);
+    const body = encodeURIComponent(`${msg}\n\n— ${name} (${email})`);
+    window.location.href = `mailto:marcomedinacastro2003@gmail.com?subject=${subject}&body=${body}`;
+  });
+})();
+</script>
+</body>
+</html>
