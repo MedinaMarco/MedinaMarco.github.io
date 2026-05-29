@@ -1287,18 +1287,26 @@
   f.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = f.querySelector('button[type="submit"]');
+    const originalHTML = btn.innerHTML;
     btn.textContent = 'Enviando…';
     btn.disabled = true;
-    const res = await fetch(f.action, {
-      method: 'POST',
-      body: new FormData(f),
-      headers: { 'Accept': 'application/json' }
-    });
-    if(res.ok){
-      f.innerHTML = '<p style="color:var(--cyan);font-family:var(--mono);font-size:15px;padding:20px 0">✓ Mensaje enviado. Te respondo a la brevedad.</p>';
-    } else {
-      btn.textContent = 'Error — intentá de nuevo';
+    try {
+      const res = await fetch(f.action, {
+        method: 'POST',
+        body: new FormData(f),
+        headers: { 'Accept': 'application/json' }
+      });
+      if(res.ok){
+        f.innerHTML = '<p style="color:var(--cyan);font-family:var(--mono);font-size:15px;padding:20px 0">✓ Mensaje enviado. Te respondo a la brevedad.</p>';
+      } else {
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+        alert('Error al enviar. Intentá de nuevo.');
+      }
+    } catch {
+      btn.innerHTML = originalHTML;
       btn.disabled = false;
+      alert('Error de red. Intentá de nuevo.');
     }
   });
 })();
