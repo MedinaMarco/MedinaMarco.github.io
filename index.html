@@ -232,14 +232,25 @@ section { position: relative; }
   display: flex; align-items: center; justify-content: center; padding: 36px; min-height: 440px; overflow: hidden;
 }
 .feature-visual .vglow { position: absolute; width: 340px; height: 340px; border-radius: 50%; filter: blur(70px); background: radial-gradient(circle, rgba(0,102,255,.35), transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); }
-.map-svg { position: relative; width: 230px; height: auto; filter: drop-shadow(0 8px 30px rgba(0,102,255,.25)); }
-.map-svg .ar-land { fill: rgba(255,255,255,0.04); stroke: rgba(120,170,255,0.5); stroke-width: 1.4; }
-.risk-dot { animation: riskpulse 3s var(--ease) infinite; transform-box: fill-box; transform-origin: center; }
-.risk-dot:nth-child(2) { animation-delay: .4s } .risk-dot:nth-child(3) { animation-delay: .8s }
-.risk-dot:nth-child(4) { animation-delay: 1.2s } .risk-dot:nth-child(5) { animation-delay: 1.6s }
-@keyframes riskpulse { 0%, 100% { opacity: .55 } 50% { opacity: 1 } }
 
-/* Floating metric chips over map */
+/* DocuMentor — agentic RAG */
+.feature-doc .feature-visual { background: linear-gradient(160deg, #0b0a1d, #1a1140); }
+.feature-doc .vglow { background: radial-gradient(circle, rgba(124,92,255,.42), transparent 70%); }
+.graph { width: 300px; max-width: 90%; height: auto; filter: drop-shadow(0 10px 30px rgba(124,92,255,.3)); }
+.graph .g-node { fill: rgba(255,255,255,0.05); stroke: rgba(170,152,255,0.5); stroke-width: 1.4; }
+.graph .g-accent { stroke: #0066ff; stroke-width: 1.9; }
+.graph .g-final { stroke: #16a34a; stroke-width: 1.7; }
+.graph .g-edge { stroke: rgba(255,255,255,0.3); stroke-width: 1.5; fill: none; }
+.graph .g-retry { stroke: #0066ff; stroke-width: 2; fill: none; stroke-dasharray: 150; stroke-dashoffset: 150; animation: retrydraw 3.4s var(--ease) infinite; }
+@keyframes retrydraw { 0% { stroke-dashoffset: 150; opacity: .3 } 55% { stroke-dashoffset: 0; opacity: 1 } 100% { stroke-dashoffset: 0; opacity: .35 } }
+.graph text { font-family: var(--font-mono); fill: #e9e7ff; }
+.graph .g-t { font-size: 11px; } .graph .g-sm { font-size: 9.5px; }
+.graph .g-yes { fill: #34d399; font-size: 9.5px; } .graph .g-no { fill: #fbbf24; font-size: 9.5px; }
+.graph .g-retry-lbl { fill: #0066ff; font-size: 9px; letter-spacing: .08em; }
+.doc-score { bottom: 24px; left: 24px; }
+.doc-status { position: absolute; top: 22px; right: 22px; font-family: var(--font-mono); font-size: 11px; color: #fbbf24; background: rgba(251,191,36,0.13); border: 1px solid rgba(251,191,36,0.32); border-radius: 9px; padding: 5px 11px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 3; }
+
+/* Floating metric chips */
 .map-metric {
   position: absolute; font-family: var(--font-mono); font-size: 12px; font-weight: 500;
   background: rgba(255,255,255,0.1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -259,9 +270,6 @@ section { position: relative; }
 }
 .feature-body h3 { font-family: var(--font-display); font-weight: 800; font-size: 30px; letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 18px; }
 .feature-body p { font-size: 16px; color: var(--gray-600); font-weight: 300; line-height: 1.65; margin-bottom: 24px; }
-.risk-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 24px; }
-.rl { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 11px; color: var(--gray-600); }
-.rl .sw { width: 9px; height: 9px; border-radius: 3px; }
 .metrics { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
 .metric { font-family: var(--font-mono); font-size: 12px; padding: 6px 11px; border-radius: 9px; background: var(--accent-light); color: var(--accent-dark); font-weight: 500; }
 .pstacks { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 28px; }
@@ -290,6 +298,13 @@ section { position: relative; }
 .pcard-body h3 { font-family: var(--font-display); font-weight: 700; font-size: 21px; letter-spacing: -0.025em; line-height: 1.15; margin-bottom: 14px; }
 .pcard-body p { font-size: 15px; color: var(--gray-600); font-weight: 300; line-height: 1.6; margin-bottom: 20px; flex: 1; }
 
+/* Mini Argentina map */
+.map-mini { height: 172px; width: auto; filter: drop-shadow(0 6px 22px rgba(0,102,255,.28)); }
+.map-mini .ar-land { fill: rgba(255,255,255,0.04); stroke: rgba(120,170,255,0.5); stroke-width: 1.7; }
+.risk-dot { animation: riskpulse 3s var(--ease) infinite; transform-box: fill-box; transform-origin: center; }
+.risk-dot:nth-child(2) { animation-delay: .4s } .risk-dot:nth-child(3) { animation-delay: .8s } .risk-dot:nth-child(4) { animation-delay: 1.2s }
+@keyframes riskpulse { 0%, 100% { opacity: .55 } 50% { opacity: 1 } }
+
 /* Neural-net SVG animation */
 .nn { width: 90%; height: auto; position: relative; }
 .nn .nn-line { stroke: rgba(120,170,255,0.45); stroke-width: 1; stroke-dasharray: 120; stroke-dashoffset: 120; animation: nndraw 3.2s var(--ease) infinite; }
@@ -297,13 +312,6 @@ section { position: relative; }
 .nn .nn-node { animation: nnpulse 2.4s var(--ease) infinite; transform-box: fill-box; transform-origin: center; }
 .nn .nn-node:nth-child(odd) { animation-delay: .5s }
 @keyframes nnpulse { 0%, 100% { opacity: .6 } 50% { opacity: 1 } }
-
-/* Donut chart */
-.donut { position: relative; }
-.donut .ring-fill { stroke-dasharray: var(--c); stroke-dashoffset: var(--c); transition: stroke-dashoffset 1.6s var(--ease); }
-.donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; }
-.donut-center .dc-num { font-family: var(--font-display); font-weight: 800; font-size: 26px; color: #fff; }
-.donut-center .dc-lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--gray-400); margin-top: 2px; }
 
 /* ============================================================
    SOBRE MÍ — black
@@ -464,7 +472,8 @@ html.js-reveal .reveal.in { opacity: 1; transform: none; }
 <div class="ln">  <span class="tk-key">"foco"</span><span class="tk-punc">: [</span></div>
 <div class="ln">    <span class="tk-str">"machine_learning"</span><span class="tk-punc">,</span></div>
 <div class="ln">    <span class="tk-str">"analisis_predictivo"</span><span class="tk-punc">,</span></div>
-<div class="ln">    <span class="tk-str">"automatizacion"</span></div>
+<div class="ln">    <span class="tk-str">"automatizacion"</span><span class="tk-punc">,</span></div>
+<div class="ln">    <span class="tk-str">"ia_generativa_agentica"</span></div>
 <div class="ln">  <span class="tk-punc">],</span></div>
 <div class="ln">  <span class="tk-key">"modelos_deployados"</span><span class="tk-punc">: </span><span class="tk-num">5</span><span class="tk-punc">,</span></div>
 <div class="ln">  <span class="tk-key">"disponible"</span><span class="tk-punc">: </span><span class="tk-bool">true</span></div>
@@ -477,7 +486,7 @@ html.js-reveal .reveal.in { opacity: 1; transform: none; }
           Modelo deployado
         </div>
         <div class="float-badge fb-2">
-          <span class="fb-num">CV 5-fold</span> · 79%
+          <span class="fb-num">Agentic RAG</span> · LangGraph
         </div>
       </div>
 
@@ -540,7 +549,7 @@ html.js-reveal .reveal.in { opacity: 1; transform: none; }
           <li>Streamlit</li>
           <li>Shiny (R)</li>
           <li>Git · GitHub</li>
-          <li>Prolog</li>
+          <li>LangChain · LangGraph</li>
           <li>Código modular</li>
         </ul>
       </div>
@@ -557,51 +566,71 @@ html.js-reveal .reveal.in { opacity: 1; transform: none; }
     <div class="sec-head reveal">
       <span class="sec-kicker">Proyectos seleccionados</span>
       <h2>Resultados medibles,<br/>no solo notebooks.</h2>
-      <p>Cinco proyectos que cubren el rango completo: desde un sistema territorial sobre ~5M de registros hasta una app que enseña redes neuronales paso a paso.</p>
+      <p>Un arco que va de los fundamentos a la frontera: de una red neuronal escrita a mano, a Machine Learning sobre ~5M de registros reales, hasta IA generativa agéntica que razona sobre su propio proceso.</p>
     </div>
 
     <div class="proj-list">
 
-      <!-- FEATURED: SAT Dashboard -->
-      <article class="feature reveal">
+      <!-- FEATURED: DocuMentor (Agentic RAG) -->
+      <article class="feature feature-doc reveal">
         <div class="feature-visual">
           <div class="vglow"></div>
-          <svg class="map-svg" viewBox="0 0 240 470" aria-label="Mapa de Argentina con zonas de riesgo">
-            <path class="ar-land" d="M150 24 L168 30 L162 52 L178 64 L196 86 L178 104 L186 132 L182 168 L198 196 L188 224 L196 250 L176 252 L170 286 L156 318 L150 356 L140 388 L132 420 L140 446 L120 442 L126 410 L116 372 L120 330 L108 296 L116 262 L100 232 L96 196 L86 156 L80 108 L92 70 L104 46 L126 30 Z"/>
-            <circle class="risk-dot" cx="168" cy="216" r="6" fill="#dc2626"/>
-            <circle class="risk-dot" cx="150" cy="190" r="6" fill="#f97316"/>
-            <circle class="risk-dot" cx="172" cy="168" r="6" fill="#f97316"/>
-            <circle class="risk-dot" cx="120" cy="200" r="6" fill="#d97706"/>
-            <circle class="risk-dot" cx="128" cy="70"  r="6" fill="#d97706"/>
-            <circle class="risk-dot" cx="135" cy="360" r="6" fill="#16a34a"/>
+          <svg class="graph" viewBox="0 0 340 400" aria-label="Grafo de estados del agente RAG con loop de autocorrección">
+            <defs>
+              <marker id="ah" markerWidth="8" markerHeight="8" refX="5.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="rgba(255,255,255,0.5)"/></marker>
+              <marker id="ahr" markerWidth="9" markerHeight="9" refX="5.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0066ff"/></marker>
+            </defs>
+            <!-- edges -->
+            <line class="g-edge" x1="200" y1="46" x2="200" y2="80" marker-end="url(#ah)"/>
+            <line class="g-edge" x1="200" y1="120" x2="200" y2="151" marker-end="url(#ah)"/>
+            <line class="g-edge" x1="200" y1="214" x2="200" y2="246" marker-end="url(#ah)"/>
+            <line class="g-edge" x1="200" y1="286" x2="200" y2="320" marker-end="url(#ah)"/>
+            <line class="g-edge" x1="168" y1="182" x2="122" y2="182" marker-end="url(#ah)"/>
+            <!-- retry loop (accent) -->
+            <path class="g-retry" d="M66,161 C66,118 92,101 132,101" marker-end="url(#ahr)"/>
+            <text class="g-retry-lbl" x="30" y="130">retry ⤴</text>
+            <!-- branch labels -->
+            <text class="g-yes" x="208" y="234">sí · relevante</text>
+            <text class="g-no" x="126" y="174">no</text>
+            <!-- nodes -->
+            <rect class="g-node" x="138" y="8" width="124" height="38" rx="11"/>
+            <text class="g-t" x="200" y="31" text-anchor="middle">Pregunta</text>
+
+            <rect class="g-node" x="138" y="82" width="124" height="38" rx="11"/>
+            <text class="g-t" x="200" y="105" text-anchor="middle">Retrieve</text>
+
+            <polygon class="g-node g-accent" points="200,150 232,182 200,214 168,182"/>
+            <text class="g-t g-sm" x="200" y="179" text-anchor="middle">Grade</text>
+            <text class="g-t g-sm" x="200" y="191" text-anchor="middle">docs</text>
+
+            <rect class="g-node" x="14" y="161" width="104" height="42" rx="11"/>
+            <text class="g-t g-sm" x="66" y="186" text-anchor="middle">Rewrite query</text>
+
+            <rect class="g-node" x="138" y="248" width="124" height="38" rx="11"/>
+            <text class="g-t" x="200" y="271" text-anchor="middle">Generate</text>
+
+            <rect class="g-node g-final" x="132" y="322" width="136" height="46" rx="12"/>
+            <text class="g-t g-sm" x="200" y="341" text-anchor="middle">Respuesta</text>
+            <text class="g-t g-sm" x="200" y="356" text-anchor="middle">+ fuentes citadas</text>
           </svg>
-          <div class="map-metric mm-1">accuracy <span class="v">~80%</span></div>
-          <div class="map-metric mm-2">300 árboles · 13 features</div>
-          <div class="map-metric mm-3">~5M registros</div>
+          <div class="map-metric doc-score">score <span class="v">4.2/5</span> · LLM-as-judge</div>
+          <div class="doc-status">🚧 En desarrollo</div>
         </div>
         <div class="feature-body">
-          <span class="proj-tag">★ Proyecto destacado</span>
-          <h3>SAT Dashboard — Zonas de Riesgo</h3>
-          <p>Sistema de análisis territorial que clasifica el nivel de riesgo delictivo por departamento en Argentina usando un Random Forest entrenado sobre datos reales del Ministerio de Seguridad de la Nación (vía API CKAN, 2017–2024). App productiva en Streamlit con código modular.</p>
-          <div class="risk-legend">
-            <span class="rl"><span class="sw" style="background:#16a34a"></span>BAJO</span>
-            <span class="rl"><span class="sw" style="background:#d97706"></span>MEDIO</span>
-            <span class="rl"><span class="sw" style="background:#f97316"></span>ALTO</span>
-            <span class="rl"><span class="sw" style="background:#dc2626"></span>MUY ALTO</span>
-          </div>
+          <span class="proj-tag">🤖 IA Generativa · Agentic RAG</span>
+          <h3>DocuMentor — Asistente RAG Agéntico</h3>
+          <p>Sistema de IA generativa que responde preguntas sobre un corpus de documentos (PDFs) vía recuperación semántica. A diferencia de un RAG tradicional, el agente razona sobre su propio proceso: califica si los documentos recuperados son relevantes, reformula la consulta si no lo son, y reintenta — hasta lograr una respuesta respaldada por las fuentes.</p>
           <div class="metrics">
-            <span class="metric">~80% accuracy</span>
-            <span class="metric">CV 5-fold ~79%</span>
-            <span class="metric">300 árboles</span>
-            <span class="metric">13 features</span>
-            <span class="metric">~5M registros</span>
+            <span class="metric">Agentic RAG · LangGraph</span>
+            <span class="metric">Hasta 2 reintentos de autocorrección</span>
+            <span class="metric">Citado de fuentes con n.° de página</span>
+            <span class="metric">Motor: Ollama / OpenAI / Anthropic</span>
           </div>
           <div class="pstacks">
-            <span class="pstack">Python</span><span class="pstack">Streamlit</span><span class="pstack">Scikit-learn</span><span class="pstack">Plotly</span><span class="pstack">Pandas</span><span class="pstack">API CKAN</span>
+            <span class="pstack">LangChain</span><span class="pstack">LangGraph</span><span class="pstack">ChromaDB</span><span class="pstack">Embeddings</span><span class="pstack">Streamlit</span><span class="pstack">LLMs</span>
           </div>
-          <a class="proj-cta" href="https://github.com/MedinaMarco/Zonas-de-Riesgo" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2.03c-3.2.69-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.19 1.19a11 11 0 0 1 5.81 0c2.22-1.5 3.19-1.19 3.19-1.19.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
-            Ver en GitHub
+          <a class="proj-cta" href="https://github.com/MedinaMarco" target="_blank" rel="noopener">
+            Ver proyecto
             <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
           </a>
         </div>
@@ -609,6 +638,38 @@ html.js-reveal .reveal.in { opacity: 1; transform: none; }
 
       <!-- GRID: 4 regular cards -->
       <div class="proj-grid">
+
+        <!-- SAT Dashboard -->
+        <article class="pcard reveal">
+          <div class="pcard-visual">
+            <div class="vglow"></div>
+            <svg class="map-mini" viewBox="0 0 240 470" aria-label="Mapa de Argentina con zonas de riesgo">
+              <path class="ar-land" d="M150 24 L168 30 L162 52 L178 64 L196 86 L178 104 L186 132 L182 168 L198 196 L188 224 L196 250 L176 252 L170 286 L156 318 L150 356 L140 388 L132 420 L140 446 L120 442 L126 410 L116 372 L120 330 L108 296 L116 262 L100 232 L96 196 L86 156 L80 108 L92 70 L104 46 L126 30 Z"/>
+              <circle class="risk-dot" cx="168" cy="216" r="6" fill="#dc2626"/>
+              <circle class="risk-dot" cx="150" cy="190" r="6" fill="#f97316"/>
+              <circle class="risk-dot" cx="120" cy="200" r="6" fill="#d97706"/>
+              <circle class="risk-dot" cx="135" cy="360" r="6" fill="#16a34a"/>
+            </svg>
+          </div>
+          <div class="pcard-body">
+            <span class="proj-tag">ML en producción · Random Forest</span>
+            <h3>SAT Dashboard — Zonas de Riesgo</h3>
+            <p>Clasifica el nivel de riesgo delictivo por departamento en Argentina con un Random Forest entrenado sobre datos reales del Ministerio de Seguridad (API CKAN, 2017–2024). App productiva en Streamlit con código modular.</p>
+            <div class="metrics">
+              <span class="metric">~80% accuracy</span>
+              <span class="metric">CV 5-fold ~79%</span>
+              <span class="metric">~5M registros</span>
+            </div>
+            <div class="pstacks">
+              <span class="pstack">Python</span><span class="pstack">Streamlit</span><span class="pstack">Scikit-learn</span><span class="pstack">Plotly</span>
+            </div>
+            <a class="proj-cta" href="https://github.com/MedinaMarco/Zonas-de-Riesgo" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2.03c-3.2.69-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.19 1.19a11 11 0 0 1 5.81 0c2.22-1.5 3.19-1.19 3.19-1.19.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+              Ver en GitHub
+              <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+            </a>
+          </div>
+        </article>
 
         <!-- NeuroLab -->
         <article class="pcard reveal">
@@ -650,46 +711,12 @@ html.js-reveal .reveal.in { opacity: 1; transform: none; }
           </div>
         </article>
 
-        <!-- Fake News -->
-        <article class="pcard reveal">
-          <div class="pcard-visual">
-            <div class="vglow"></div>
-            <div class="donut">
-              <svg width="150" height="150" viewBox="0 0 120 120">
-                <circle cx="60" cy="60" r="46" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="14"/>
-                <circle class="ring-fill" cx="60" cy="60" r="46" fill="none" stroke="#0066ff" stroke-width="14" stroke-linecap="round" transform="rotate(-90 60 60)" style="--c:289;"/>
-              </svg>
-              <div class="donut-center"><span class="dc-num">94%</span><span class="dc-lbl">Precisión</span></div>
-            </div>
-          </div>
-          <div class="pcard-body">
-            <span class="proj-tag">Clasificación NLP</span>
-            <h3>Clasificador Bayesiano — Fake News</h3>
-            <p>Modelo Naive Bayes Multinomial para distinguir noticias reales de falsas. Pipeline completo de NLP: tokenización, vectorización y evaluación con métricas de precisión y recall.</p>
-            <div class="metrics">
-              <span class="metric">Naive Bayes</span>
-              <span class="metric">N-Gramas</span>
-              <span class="metric">NLP</span>
-            </div>
-            <div class="pstacks">
-              <span class="pstack">Python</span><span class="pstack">Scikit-learn</span><span class="pstack">Pandas</span>
-            </div>
-            <a class="proj-cta" href="https://github.com/MedinaMarco" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2.03c-3.2.69-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.19 1.19a11 11 0 0 1 5.81 0c2.22-1.5 3.19-1.19 3.19-1.19.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
-              Ver en GitHub
-              <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
-            </a>
-          </div>
-        </article>
-
         <!-- Dashboard Personalidad -->
         <article class="pcard reveal">
           <div class="pcard-visual">
             <div class="vglow"></div>
             <svg width="220" height="130" viewBox="0 0 220 130">
-              <g stroke="rgba(255,255,255,0.1)" stroke-width="1">
-                <line x1="20" y1="110" x2="200" y2="110"/>
-              </g>
+              <g stroke="rgba(255,255,255,0.1)" stroke-width="1"><line x1="20" y1="110" x2="200" y2="110"/></g>
               <g fill="#0066ff"><rect x="34" y="56" width="26" height="54" rx="3"/><rect x="98" y="34" width="26" height="76" rx="3"/></g>
               <g fill="#7cc4ff"><rect x="64" y="74" width="26" height="36" rx="3"/><rect x="128" y="62" width="26" height="48" rx="3"/><rect x="162" y="44" width="26" height="66" rx="3"/></g>
             </svg>
@@ -699,9 +726,7 @@ html.js-reveal .reveal.in { opacity: 1; transform: none; }
             <h3>Dashboard de Personalidad</h3>
             <p>Análisis exploratorio en R con ggplot2 y Shiny sobre datos de encuestas, explorando patrones de comportamiento entre perfiles introvertidos y extrovertidos.</p>
             <div class="metrics">
-              <span class="metric">EDA</span>
-              <span class="metric">ggplot2</span>
-              <span class="metric">Shiny</span>
+              <span class="metric">EDA</span><span class="metric">ggplot2</span><span class="metric">Shiny</span>
             </div>
             <div class="pstacks">
               <span class="pstack">R</span><span class="pstack">ggplot2</span><span class="pstack">Shiny</span>
@@ -730,9 +755,7 @@ html.js-reveal .reveal.in { opacity: 1; transform: none; }
             <h3>Análisis de Recompra</h3>
             <p>Predicción del comportamiento de recompra del consumidor con Python. Incluye limpieza de datos, EDA y modelo para identificar patrones de fidelización.</p>
             <div class="metrics">
-              <span class="metric">Predicción</span>
-              <span class="metric">EDA</span>
-              <span class="metric">Fidelización</span>
+              <span class="metric">Predicción</span><span class="metric">EDA</span><span class="metric">Fidelización</span>
             </div>
             <div class="pstacks">
               <span class="pstack">Python</span><span class="pstack">Pandas</span><span class="pstack">Seaborn</span>
@@ -760,8 +783,8 @@ html.js-reveal .reveal.in { opacity: 1; transform: none; }
       <div class="about-bio reveal">
         <span class="sec-kicker">Sobre mí</span>
         <h2>Entiendo los algoritmos por dentro.</h2>
-        <p>Soy <strong>estudiante avanzado de Ciencia de Datos e IA</strong> en Buenos Aires, enfocado en Machine Learning aplicado, análisis predictivo y automatización de procesos.</p>
-        <p>Trabajo desde el análisis exploratorio y la limpieza de datos hasta modelos productivos con <strong>métricas verificables</strong> — y disfruto especialmente cuando puedo explicar lo que el modelo hace por dentro. Construí un MLP desde cero con NumPy para entender backpropagation en su forma más cruda.</p>
+        <p>Soy <strong>estudiante avanzado de Ciencia de Datos e IA</strong> en Buenos Aires. Mi trayectoria tiene un arco claro: de los fundamentos a la frontera.</p>
+        <p>Empecé entendiendo cómo funcionan las cosas por dentro — implementé una <strong>red neuronal con backpropagation desde cero</strong>, sin frameworks (NeuroLab). Después lo escalé a Machine Learning clásico en producción, con un <strong>Random Forest sobre ~5M de registros</strong> reales (SAT Dashboard). Hoy estoy en la frontera: sistemas de <strong>IA generativa agéntica</strong> que razonan sobre su propio proceso (DocuMentor). Fundamentos sólidos, ejecución a escala, y la tecnología que define 2026.</p>
         <blockquote class="about-quote">"Mis proyectos terminan siendo apps usables, no solo notebooks."</blockquote>
       </div>
 
@@ -776,7 +799,7 @@ html.js-reveal .reveal.in { opacity: 1; transform: none; }
         <div class="tl-item">
           <div class="tl-year">mar 2026</div>
           <div class="tl-content">
-            <h4>ETL Data Testing</h4>
+            <h4>ETL Data Testing: Todo lo que necesitás saber</h4>
             <div class="org">Udemy · The Free Range Tester</div>
             <span class="cert-badge">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
@@ -807,13 +830,13 @@ html.js-reveal .reveal.in { opacity: 1; transform: none; }
       <h2>Construyamos algo<br/>con <span class="accent">datos reales</span>.</h2>
       <p>Disponible para proyectos de Data Science, Machine Learning y automatización. Hablemos.</p>
       <div class="chips">
-        <a class="chip" id="emailLink" href="mailto:marcomedinacastro2003@gmail.com">
+        <a class="chip" href="mailto:marcomedinacastro2003@gmail.com">
           <span class="chip-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
           <span class="chip-txt"><span class="l">Email</span><span class="v">marcomedinacastro2003@gmail.com</span></span>
         </a>
-        <a class="chip" id="linkedinLink" href="www.linkedin.com/in/marco-medina-castro-247374236" target="_blank" rel="noopener">
+        <a class="chip" href="https://www.linkedin.com/in/marco-medina-castro-247374236/" target="_blank" rel="noopener">
           <span class="chip-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></span>
-          <span class="chip-txt"><span class="l">LinkedIn</span><span class="v">/in/marco-medina</span></span>
+          <span class="chip-txt"><span class="l">LinkedIn</span><span class="v">marco-medina-castro</span></span>
         </a>
         <a class="chip" href="https://github.com/MedinaMarco" target="_blank" rel="noopener">
           <span class="chip-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2.03c-3.2.69-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.19 1.19a11 11 0 0 1 5.81 0c2.22-1.5 3.19-1.19 3.19-1.19.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg></span>
@@ -840,7 +863,6 @@ html.js-reveal .reveal.in { opacity: 1; transform: none; }
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
-/* Stagger reveal delays within sibling groups */
 const reveals = [...document.querySelectorAll('.reveal')];
 reveals.forEach((el) => {
   const sibs = [...el.parentElement.querySelectorAll(':scope > .reveal')];
@@ -848,7 +870,6 @@ reveals.forEach((el) => {
   el.style.transitionDelay = Math.min(idx, 6) * 70 + 'ms';
 });
 
-/* Count-up animation */
 function countUp(el) {
   if (el.dataset.done) return;
   el.dataset.done = '1';
@@ -865,35 +886,16 @@ function countUp(el) {
   requestAnimationFrame(tick);
 }
 
-/* Donut fill animation */
-function fillDonut(d) {
-  if (d.dataset.done) return;
-  d.dataset.done = '1';
-  const ring = d.querySelector('.ring-fill');
-  if (ring) {
-    const circumference = 289;
-    const pct = 0.94;
-    ring.style.strokeDashoffset = (circumference * (1 - pct)).toFixed(1);
-  }
-}
-
-/* Scroll-driven reveals */
 function onScroll() {
   const vh = window.innerHeight;
   reveals.forEach((el) => {
     if (el.classList.contains('in')) return;
     const r = el.getBoundingClientRect();
-    if (r.top < vh * 0.92 && r.bottom > 0) {
-      el.classList.add('in');
-    }
+    if (r.top < vh * 0.92 && r.bottom > 0) el.classList.add('in');
   });
   document.querySelectorAll('.num[data-target]').forEach((n) => {
     const r = n.getBoundingClientRect();
     if (r.top < vh * 0.95 && r.bottom > 0) countUp(n);
-  });
-  document.querySelectorAll('.donut').forEach((d) => {
-    const r = d.getBoundingClientRect();
-    if (r.top < vh * 0.9 && r.bottom > 0) fillDonut(d);
   });
 }
 
@@ -901,12 +903,7 @@ window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', onScroll);
 window.addEventListener('load', onScroll);
 onScroll();
-
-/* Safety net: ensure nothing stays hidden */
-setTimeout(() => {
-  reveals.forEach((el) => el.classList.add('in'));
-  onScroll();
-}, 1200);
+setTimeout(() => { reveals.forEach((el) => el.classList.add('in')); onScroll(); }, 1200);
 </script>
 </body>
 </html>
